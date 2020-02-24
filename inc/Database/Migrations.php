@@ -14,7 +14,7 @@ class Migrations
             $sql = "CREATE TABLE $table_name(
 	    	id int AUTO_INCREMENT NOT NULL,
 	    	transaction_id varchar(255) NOT NULL,
-	    	name varchar(125) NOT NULL DEFAULT 'Anonymous',
+	    	name varchar(125) NOT NULL,
 	    	email varchar(125) NOT NULL,
 	    	phone varchar(125) NOT NULL,
 	    	tribute text NULL,
