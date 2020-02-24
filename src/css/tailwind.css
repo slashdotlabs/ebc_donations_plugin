@@ -1,0 +1,15 @@
+/* purgecss start ignore */
+/*@tailwind  base;*/
+@tailwind components;
+/* purgecss end ignore */
+
+.btn {
+    @apply border-none outline-none shadow-none py-3 px-4 rounded border border-transparent;
+}
+
+.btn:hover,
+.btn:focus {
+    @apply shadow-none outline-none;
+}
+
+@tailwind utilities;

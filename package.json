@@ -1,0 +1,25 @@
+{
+  "name": "starter-template",
+  "version": "1.0.0",
+  "description": "Starter template scaffold",
+  "main": "index.js",
+  "scripts": {
+    "build": "postcss src/css/tailwind.css -o assets/css/main.css",
+    "watch": "postcss src/css/tailwind.css -o assets/css/main.css --watch",
+    "prod": " cross-env NODE_ENV=production postcss src/css/tailwind.css -o assets/css/main.css"
+  },
+  "keywords": [
+    "wordpress",
+    "plugin"
+  ],
+  "author": "Stephen Wanyee",
+  "license": "ISC",
+  "devDependencies": {
+    "postcss-cli": "^7.1.0",
+    "@fullhuman/postcss-purgecss": "^2.0.6",
+    "autoprefixer": "^9.7.4",
+    "cross-env": "^7.0.0",
+    "postcss": "^7.0.26",
+    "tailwindcss": "^1.1.4"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "slashdotlabs/coupons-cart",
+  "description": "Integrates payment module into forms",
+  "type": "project",
+  "authors": [
+    {
+      "name": "Slash Dot Labs",
+      "email": "technical@slashdotlabs.com"
+    }
+  ],
+  "require": {
+    "twig/twig": "^3.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "SlashEbc\\": "./inc"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "SlashEbcConsoleApp\\": "./console_app"
+    }
+  },
+  "require-dev": {
+    "symfony/console": "^5.0",
+    "symfony/process": "^5.0",
+    "guzzlehttp/guzzle": "~6.0",
+    "caseyamcl/guzzle_retry_middleware": "^2.3",
+    "symfony/dotenv": "^5.0",
+    "erusev/parsedown": "^1.7"
+  }
+}
