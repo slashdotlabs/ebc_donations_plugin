@@ -111,6 +111,9 @@ class IpayGateway extends BaseController
             ];
             $updated = $this->donations_model->update($update_data, ['transaction_id' => $response['id']]);
             if ($updated === false) throw new Exception('Could not process request');
+            print("
+                <script>window.location.assign(window.location.href.split(\"?\")[0]);</script>
+            ");
         } catch (Exception $exception) {
             $this->logger->log(json_encode([
                 'code' => $exception->getCode(),
