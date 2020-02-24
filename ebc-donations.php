@@ -3,7 +3,7 @@
  *
  * Plugin Name:       EBC Donations Form
  * Description:       Integrates iPay payment gateway with user filled form
- * Version:	1.0.1
+ * Version:	1.1.0
  * Requires at least: 5.2
  * Requires PHP:      7.3
  * Author:            Slash Dot Labs Limited
