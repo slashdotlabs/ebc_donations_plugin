@@ -1,5 +1,6 @@
 <?php
  namespace SlashEbc\Base;
+ use SlashEbc\Base\BaseController;
 
  class SettingsLink extends BaseController{
 
