@@ -17,7 +17,7 @@ final class Init
             Pages\Admin::class,
             Base\SettingsLink::class,
             Base\DonationsForm::class,
-//            Base\Updater::class,
+            Base\Updater::class,
         ];
     }
 

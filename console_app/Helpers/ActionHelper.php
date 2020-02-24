@@ -4,8 +4,8 @@
 namespace SlashEbcConsoleApp\Helpers;
 
 
-use ConsoleApp\Commands\PublishCommand;
 use Exception;
+use SlashEbcConsoleApp\Commands\PublishCommand;
 
 class ActionHelper
 {

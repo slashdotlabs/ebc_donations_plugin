@@ -16,7 +16,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class DeleteCommand extends Command
 {
-    protected static string $defaultName = "release:delete";
+    protected static $defaultName = "release:delete";
 
     public $repo;
     public $username;

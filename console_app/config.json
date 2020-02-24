@@ -1,8 +1,8 @@
 {
   "github_username" : "slashdotlabs",
-  "github_repo": "slashdotlabs_coupons_cart_plugin",
+  "github_repo": "ebc_donations_plugin",
   "remote": "origin",
   "dev_branch": "master",
   "release_branch": "release",
-  "plugin_file": "coupons-cart.php"
+  "plugin_file": "ebc_donations.php"
 }
