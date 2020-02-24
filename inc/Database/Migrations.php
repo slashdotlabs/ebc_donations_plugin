@@ -25,7 +25,8 @@ class Migrations
 	    	payment_date timestamp NULL,
 	    	status ENUM('initiated', 'cancelled', 'completed') DEFAULT 'initiated',
 	    	PRIMARY KEY  (id),
-	    	UNIQUE (transaction_id)
+	    	UNIQUE (transaction_id(50)),
+	    	UNIQUE (payment_type(50), transaction_ref(50))
 	    	) $charset_collate;";
 
             require_once(ABSPATH . '/wp-admin/includes/upgrade.php');
