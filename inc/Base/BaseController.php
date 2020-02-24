@@ -23,7 +23,7 @@ abstract class BaseController
         $this->plugin_url = plugin_dir_url($this->dirname_r(__FILE__, 2));
         $this->plugin_name = SLASH_COUPON_PLUGIN_NAME;
 
-        $name_parts = explode('/', $this->plugin_name); //'/' <-> DIRECTORY SEPARATOR  -- FOR NON-WINDOWS SYSTEMS
+        $name_parts = explode('/', $this->plugin_name); // --- FOR NON-WINDOWS SYSTEMS --- '/'  <->  DIRECTORY SEPARATOR  
         $this->plugin_slug = $name_parts[0];
         $this->plugin_file = $this->plugin_path.$name_parts[1];
 
