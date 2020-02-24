@@ -6,4 +6,8 @@ if (file_exists(dirname(__FILE__) . '/vendor/autoload.php')) {
     require_once dirname(__FILE__) . '/vendor/autoload.php';
 }
 
-// TODO: Handle uninstall actions
+// Drop the Payments table
+SlashEbc\Database\Migrations::dropDonationsTable();
+
+// Clear plugin options
+delete_option("ebc_donations_plugin");
