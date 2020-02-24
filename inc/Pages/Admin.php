@@ -28,8 +28,8 @@ class Admin extends BaseController
         $this->setSubPages();
 
         $this->setSettings();
-//        $this->setSections();
-//        $this->setFields();
+        $this->setSections();
+        $this->setFields();
 
         $this->settings->addPages($this->pages)
             ->withSubPage('Configuration Settings')
@@ -42,7 +42,7 @@ class Admin extends BaseController
 
         $this->pages = array(
             [
-                'page_title' => 'EBC Donations Donations',
+                'page_title' => 'EBC Donations',
                 'menu_title' => 'Donations Form',
                 'capability' => 'manage_options',
                 'menu_slug' => 'ebc_donations_plugin',
@@ -84,37 +84,17 @@ class Admin extends BaseController
     {
         $args = array(
             [
-                'id' => 'ccart_ipay_live_index',
+                'id' => 'ebc_ipay_live_index',
                 'page' => 'ebc_donations_plugin'
 
             ],
             [
-                'id' => 'ccart_ipay_index',
+                'id' => 'ebc_ipay_index',
                 'title' => 'iPay Settings',
-                'callback' => array($this->callbacks, 'ccartIpaySection'),
+                'callback' => array($this->callbacks, 'ebcIpaySection'),
                 'page' => 'ebc_donations_plugin'
 
             ],
-            [
-                'id' => 'ccart_mail_index',
-                'title' => 'Mailing Settings',
-                'callback' => array($this->callbacks, 'ccartMailSection'),
-                'page' => 'ebc_donations_plugin'
-
-            ],
-            [
-                'id' => 'ccart_set_smtp_index',
-                'page' => 'ebc_donations_plugin'
-
-            ],
-            [
-                'id' => 'ccart_smtp_index',
-                'title' => 'SMTP Settings',
-                'callback' => array($this->callbacks, 'ccartSMTPSection'),
-                'page' => 'ebc_donations_plugin'
-
-            ],
-
         );
         $this->settings->setSections($args);
 
@@ -123,19 +103,19 @@ class Admin extends BaseController
     public function setFields()
     {
         $args = array();
-        foreach ($this->ccart_settings['ipay'] as $key => $value) {
+        foreach ($this->ebc_settings['ipay'] as $key => $value) {
             switch ($value[2]) {
                 case "toggle":
                     $args[] = array(
                         'id' => $key,
                         'title' => $value[0],
-                        'callback' => array($this->callbacks, 'ccartCheckboxFields'),
-                        'page' => 'coupons_plugin',
-                        'section' => 'ccart_ipay_live_index',
+                        'callback' => array($this->callbacks, 'ebcCheckboxFields'),
+                        'page' => 'ebc_donations_plugin',
+                        'section' => 'ebc_ipay_live_index',
                         'args' => array(
                             'label_for' => $key,
                             'field' => 'ipay',
-                            'option_name' => 'coupons_plugin',
+                            'option_name' => 'ebc_donations_plugin',
                             'class' => 'example-class',
                         )
                     );
@@ -144,114 +124,15 @@ class Admin extends BaseController
                     $args[] = array(
                         'id' => $key,
                         'title' => $value[0],
-                        'callback' => array($this->callbacks, 'ccartTextFields'),
-                        'page' => 'coupons_plugin',
-                        'section' => 'ccart_ipay_index',
+                        'callback' => array($this->callbacks, 'ebcTextFields'),
+                        'page' => 'ebc_donations_plugin',
+                        'section' => 'ebc_ipay_index',
                         'args' => array(
                             'label_for' => $key,
                             'placeholder' => $value[1],
                             'field' => 'ipay',
                             'class' => 'example-class',
-                            'option_name' => 'coupons_plugin',
-                        )
-                    );
-            }
-        }
-        foreach ($this->ccart_settings['mail'] as $key => $value) {
-            $args[] = array(
-                'id' => $key,
-                'title' => $value[0],
-                'callback' => array($this->callbacks, 'ccartTextFields'),
-                'page' => 'coupons_plugin',
-                'section' => 'ccart_mail_index',
-                'args' => array(
-                    'label_for' => $key,
-                    'field' => 'mail',
-                    'placeholder' => $value[1],
-                    'option_name' => 'coupons_plugin',
-                    'class' => 'example-class',
-                )
-            );
-        }
-
-        foreach ($this->ccart_settings['smtp'] as $key => $value) {
-            switch ($value[2]) {
-                case "toggle":
-                    $args[] = array(
-                        'id' => $key,
-                        'title' => $value[0],
-                        'callback' => array($this->callbacks, 'ccartCheckboxFields'),
-                        'page' => 'coupons_plugin',
-                        'section' => 'ccart_set_smtp_index',
-                        'args' => array(
-                            'label_for' => $key,
-                            'field' => 'smtp',
-                            'option_name' => 'coupons_plugin',
-                            'class' => 'example-class',
-                        )
-                    );
-                    break;
-                case "number":
-                    $args[] = array(
-                        'id' => $key,
-                        'title' => $value[0],
-                        'callback' => array($this->callbacks, 'ccartNumericFields'),
-                        'page' => 'coupons_plugin',
-                        'section' => 'ccart_smtp_index',
-                        'args' => array(
-                            'label_for' => $key,
-                            'field' => 'smtp',
-                            'placeholder' => $value[1],
-                            'option_name' => 'coupons_plugin',
-                            'class' => 'example-class',
-                        )
-                    );
-                    break;
-                case "option":
-                    $args[] = array(
-                        'id' => $key,
-                        'title' => $value[0],
-                        'callback' => array($this->callbacks, 'ccartRadioButtons'),
-                        'page' => 'coupons_plugin',
-                        'section' => 'ccart_smtp_index',
-                        'args' => array(
-                            'label_for' => $key,
-                            'field' => 'smtp',
-                            'placeholder' => $value[1],
-                            'option_name' => 'coupons_plugin',
-                            'class' => 'example-class',
-                        )
-                    );
-                    break;
-                case "password":
-                    $args[] = array(
-                        'id' => $key,
-                        'title' => $value[0],
-                        'callback' => array($this->callbacks, 'ccartPasswordFields'),
-                        'page' => 'coupons_plugin',
-                        'section' => 'ccart_smtp_index',
-                        'args' => array(
-                            'label_for' => $key,
-                            'field' => 'smtp',
-                            'placeholder' => $value[1],
-                            'option_name' => 'coupons_plugin',
-                            'class' => 'example-class',
-                        )
-                    );
-                    break;
-                default:
-                    $args[] = array(
-                        'id' => $key,
-                        'title' => $value[0],
-                        'callback' => array($this->callbacks, 'ccartTextFields'),
-                        'page' => 'coupons_plugin',
-                        'section' => 'ccart_smtp_index',
-                        'args' => array(
-                            'label_for' => $key,
-                            'field' => 'smtp',
-                            'placeholder' => $value[1],
-                            'option_name' => 'coupons_plugin',
-                            'class' => 'example-class',
+                            'option_name' => 'ebc_donations_plugin',
                         )
                     );
             }
