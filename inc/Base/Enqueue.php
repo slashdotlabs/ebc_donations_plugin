@@ -44,12 +44,8 @@ class Enqueue extends BaseController
         }
 
         if (is_page('musyimi')) {
-            // Masked Inputs
-            wp_enqueue_script('ebc-maskedinputs-script', $this->plugin_url . 'assets/js/jquery.maskedinput.min.js', ['jquery']);
-
             wp_enqueue_script('ebc-main-script', $this->plugin_url . 'assets/js/main.js', [
-                'jquery',
-                'ebc-maskedinputs-script'
+                'jquery'
             ]);
 
 

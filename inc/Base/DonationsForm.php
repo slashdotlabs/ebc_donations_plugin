@@ -48,6 +48,10 @@ class DonationsForm extends BaseController
         // Get form data
         $data = $_POST['data'];
 
+        // if empty
+        $data['email'] = $data['email'] ?: "admin@ebcnairobi.org";
+        $data['phone_number'] = $data['phone_number'] ?: '0708847952';
+
         // Insert transactions to donations table
         $donationsModel = new DonationsModel();
         $transaction_id = time();
