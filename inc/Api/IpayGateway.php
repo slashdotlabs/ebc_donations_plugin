@@ -32,11 +32,6 @@ class IpayGateway extends BaseController
             $this->mode = $ipay_options['live'] ? "1" : "0";
             $this->vendor_id = $ipay_options['vendor_id'];
             $this->hashkey = $ipay_options['hashkey'];
-        } else {
-            // TODO: remove after test
-            $this->mode = "0";
-            $this->vendor_id = "demo";//"ebcnairobi";
-            $this->hashkey = "demoCHANGED";//"ebcnb0756FJGS45th30254";
         }
     }
 
