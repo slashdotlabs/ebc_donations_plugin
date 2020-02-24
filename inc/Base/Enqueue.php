@@ -38,23 +38,26 @@ class Enqueue extends BaseController
 
     public function enqueue_front_scripts()
     {
-        // TODO: handle to be only in form page and thank you page
-//        if (is_single()) {
-//            wp_enqueue_style('scp-tailwind', $this->plugin_url . 'assets/css/ebc_donations.css');
-//
-//            // Masked Inputs
-//            wp_enqueue_script('scp-maskedinputs-script', $this->plugin_url . 'assets/js/jquery.maskedinput.min.js', ['jquery']);
-//
-//            wp_enqueue_script('scp-main-script', $this->plugin_url . 'assets/js/main.js', [
-//                'jquery',
-//                'scp-maskedinputs-script'
-//            ]);
-//
-//            $title_nonce = wp_create_nonce('scp_redeem_form');
-//            wp_localize_script('scp-main-script', 'redeem_form_ajax', [
-//                'ajax_url' => admin_url('admin-ajax.php'), 'nonce' => $title_nonce
-//            ]);
-//        }
+        // Show only in donations page (musyimi) or thank you page (thank-you)
+        if (is_page(['musyimi', 'thank-you'])) {
+            wp_enqueue_style('ebc-main', $this->plugin_url . 'assets/css/ebc_donations.css');
+        }
+
+        if (is_page('musyimi')) {
+            // Masked Inputs
+            wp_enqueue_script('ebc-maskedinputs-script', $this->plugin_url . 'assets/js/jquery.maskedinput.min.js', ['jquery']);
+
+            wp_enqueue_script('ebc-main-script', $this->plugin_url . 'assets/js/main.js', [
+                'jquery',
+                'ebc-maskedinputs-script'
+            ]);
+
+
+            $title_nonce = wp_create_nonce('ebc_submit_donation');
+            wp_localize_script('ebc-main-script', 'donations_form_ajax', [
+                'ajax_url' => admin_url('admin-ajax.php'), 'nonce' => $title_nonce
+            ]);
+        }
 
     }
 }

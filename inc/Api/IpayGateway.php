@@ -26,12 +26,17 @@ class IpayGateway extends BaseController
         $this->logger = new Logger();
 
         // Get saved options
-        $plugin_options = get_option('coupons_plugin');
-        if (!empty($plugin_options) && array_key_exists('ipay', $plugin_options)){
+        $plugin_options = get_option('ebc_donations_plugin');
+        if (!empty($plugin_options) && array_key_exists('ipay', $plugin_options)) {
             $ipay_options = $plugin_options['ipay'];
             $this->mode = $ipay_options['live'] ? "1" : "0";
             $this->vendor_id = $ipay_options['vendor_id'];
             $this->hashkey = $ipay_options['hashkey'];
+        } else {
+            // TODO: remove after test
+            $this->mode = "0";
+            $this->vendor_id = "demo";//"ebcnairobi";
+            $this->hashkey = "demoCHANGED";//"ebcnb0756FJGS45th30254";
         }
     }
 
@@ -46,7 +51,7 @@ class IpayGateway extends BaseController
             "tel" => $meta_data['phone_number'],
             "eml" => $meta_data['email'],
             "vid" => $this->vendor_id,
-            "curr" => "KES",
+            "curr" => $meta_data['currency'],
             "p1" => "",
             "p2" => "",
             "p3" => "",
@@ -82,19 +87,20 @@ class IpayGateway extends BaseController
      */
     public function payment_cb_handler()
     {
+        global $error_msg, $success_msg;
+
         try {
             $response = $_GET;
 
             if (empty($response)) return;
 
-            if(isset($_GET['debug'])) {
+            if (isset($_GET['debug'])) {
                 $this->logger->log(json_encode(['fields_return' => $response]));
             }
 
             // Check if payment is already processed
-            $record = $this->donations_model->getByOrderId($response['id']);
-            if($record === false || !isset($record)) throw new Exception("Error processing your request");
-            if($record->status !== "initiated") throw new Exception("Your coupon payment is already processed. You can exit this window now :)");
+            $record = $this->donations_model->getByTransactionId($response['id']);
+            if ($record === false || !isset($record)) throw new Exception("Error processing your request");
 
             // Verify status with iPay IPN
             $verified_status = $this->verify_payment_status($this->vendor_id, $response);
@@ -108,23 +114,8 @@ class IpayGateway extends BaseController
                 'payment_type' => $response['channel'],
                 'payment_date' => date('Y-m-d'),
             ];
-            $updated = $this->donations_model->update($update_data, ['order_id' => $response['id']]);
+            $updated = $this->donations_model->update($update_data, ['transaction_id' => $response['id']]);
             if ($updated === false) throw new Exception('Could not process request');
-
-            // Fetch whole payment record
-            $record = $this->donations_model->getByOrderId($response['id']);
-
-            if (!$status_res['process']) throw new Exception($status_res['state']);
-
-            $email_sent = $this->send_customer_email($record);
-            if (!$email_sent) throw new Exception("Error forwarding customer coupon email");
-
-            echo $this->twig->render('partials/payment_success.twig',
-                [
-                    'name' => $record->fname . " " . $record->lname,
-                    'coupon' => $record->customer_coupon,
-                    'email' => $record->email
-                ]);
         } catch (Exception $exception) {
             $this->logger->log(json_encode([
                 'code' => $exception->getCode(),
@@ -132,8 +123,8 @@ class IpayGateway extends BaseController
                 'trace' => $exception->getTraceAsString()
             ]));
             echo $this->twig->render('partials/payment_error.twig', ['content' => $exception->getMessage()]);
+            exit;
         }
-        exit;
     }
 
     private function verify_payment_status(string $vendor_id, array $response)

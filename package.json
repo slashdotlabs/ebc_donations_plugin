@@ -4,9 +4,9 @@
   "description": "Starter template scaffold",
   "main": "index.js",
   "scripts": {
-    "build": "postcss src/css/tailwind.css -o assets/css/main.css",
-    "watch": "postcss src/css/tailwind.css -o assets/css/main.css --watch",
-    "prod": " cross-env NODE_ENV=production postcss src/css/tailwind.css -o assets/css/main.css"
+    "build": "postcss src/css/tailwind.css -o assets/css/ebc_donations.css",
+    "watch": "postcss src/css/tailwind.css -o assets/css/ebc_donations.css --watch",
+    "prod": " cross-env NODE_ENV=production postcss src/css/tailwind.css -o assets/css/ebc_donations.css"
   },
   "keywords": [
     "wordpress",
@@ -15,11 +15,12 @@
   "author": "Stephen Wanyee",
   "license": "ISC",
   "devDependencies": {
-    "postcss-cli": "^7.1.0",
     "@fullhuman/postcss-purgecss": "^2.0.6",
+    "@tailwindcss/custom-forms": "^0.2.1",
     "autoprefixer": "^9.7.4",
     "cross-env": "^7.0.0",
     "postcss": "^7.0.26",
+    "postcss-cli": "^7.1.0",
     "tailwindcss": "^1.1.4"
   }
 }

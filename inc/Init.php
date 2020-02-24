@@ -16,6 +16,7 @@ final class Init
             Base\Enqueue::class,
             Pages\Admin::class,
             Base\SettingsLink::class,
+            Base\DonationsForm::class,
 //            Base\Updater::class,
         ];
     }

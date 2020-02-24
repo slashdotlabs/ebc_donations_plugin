@@ -3,6 +3,14 @@
 @tailwind components;
 /* purgecss end ignore */
 
+form#ebc-donations-form input[type=text],
+form#ebc-donations-form input[type=email],
+form#ebc-donations-form input[type=number],
+form#ebc-donations-form textarea {
+    @apply outline-none p-2 mb-6 bg-white w-full !important;
+    border: 1px solid #ddd;
+}
+
 .btn {
     @apply border-none outline-none shadow-none py-3 px-4 rounded border border-transparent;
 }

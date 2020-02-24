@@ -58,8 +58,7 @@ module.exports = {
         900: '#2a4365',
       },
       brand: {
-        'orange': '#D99C34',
-        'gray': '#9B9B9B',
+        'orange': '#FEBD35',
       }
     },
     spacing: {
@@ -423,5 +422,7 @@ module.exports = {
     zIndex: ['responsive'],
   },
   corePlugins: {},
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/custom-forms'),
+  ],
 };

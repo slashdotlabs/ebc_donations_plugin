@@ -4,6 +4,7 @@
 namespace SlashEbc\Api\Callbacks;
 
 use SlashEbc\Base\BaseController;
+use SlashEbc\Database\DonationsModel;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -22,8 +23,13 @@ class AdminCallbacks extends BaseController
      */
     function donationsPage()
     {
-        // TODO: fetch records
-        echo $this->twig->render('donations.twig', ['payments' => []]);
+        $donations = (new DonationsModel())->fetchDonations();
+        $status_badges_map = [
+            "initiated" => "info",
+            "completed" => "success",
+            "cancelled" => "danger"
+        ];
+        echo $this->twig->render('donations.twig', ['donations' => $donations, 'status_badges_map' => $status_badges_map]);
     }
 
     function ebcSettingsValidate($input)

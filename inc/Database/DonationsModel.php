@@ -13,7 +13,7 @@ class DonationsModel
     public function __construct()
     {
         global $wpdb, $table_prefix;
-        $this->table = $table_prefix . "payments";
+        $this->table = $table_prefix . "ebc_donations";
         $this->db = $wpdb;
     }
 
