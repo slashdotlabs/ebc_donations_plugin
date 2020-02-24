@@ -389,6 +389,10 @@ form#ebc-donations-form textarea {
   border-bottom-width: 1px;
 }
 
+.box-border {
+  box-sizing: border-box;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
