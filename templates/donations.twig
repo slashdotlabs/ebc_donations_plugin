@@ -21,7 +21,7 @@
         {% for donation in donations %}
         <tr class="align-middle">
             <td nowrap>
-                <span class="text-info text-uppercase">{{ donation.name| default('Anonymous') }}</span> <br>
+                <span class="text-info text-uppercase">{{ donation.name| default('Anonymous Donor') }}</span> <br>
                 <small class="text-muted font-weight-bold">{{ donation.email }} | {{ donation.phone }}</small>
             </td>
             <td class="align-middle" nowrap>{{ donation.transaction_id }}</td>
