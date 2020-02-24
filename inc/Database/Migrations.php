@@ -13,7 +13,7 @@ class Migrations
         if ($wpdb->get_var("show tables like '$table_name'") != $table_name) {
             $sql = "CREATE TABLE $table_name(
 	    	id int AUTO_INCREMENT NOT NULL,
-	    	transaction_id varchar(255) NOT NULL,
+	    	transaction_id varchar(125) NOT NULL,
 	    	name varchar(125) NOT NULL,
 	    	email varchar(125) NOT NULL,
 	    	phone varchar(125) NOT NULL,
@@ -25,8 +25,7 @@ class Migrations
 	    	payment_date timestamp NULL,
 	    	status ENUM('initiated', 'cancelled', 'completed') DEFAULT 'initiated',
 	    	PRIMARY KEY  (id),
-	    	UNIQUE (transaction_id),
-	    	UNIQUE (payment_type, transaction_ref)
+	    	UNIQUE (transaction_id)
 	    	) $charset_collate;";
 
             require_once(ABSPATH . '/wp-admin/includes/upgrade.php');
