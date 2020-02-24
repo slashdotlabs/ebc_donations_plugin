@@ -4,5 +4,5 @@
   "remote": "origin",
   "dev_branch": "master",
   "release_branch": "release",
-  "plugin_file": "ebc_donations.php"
+  "plugin_file": "ebc-donations.php"
 }
