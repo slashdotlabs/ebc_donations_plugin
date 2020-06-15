@@ -65,7 +65,7 @@ class AdminCallbacks extends BaseController
                 }
                 $output[$parentKey][$fieldKey] = $fieldValue;
             }
-            if (!in_array('live', $values)) {
+            if (!in_array('live', array_keys($values))) {
                 $output[$parentKey]['live'] = false;
             }
         }
