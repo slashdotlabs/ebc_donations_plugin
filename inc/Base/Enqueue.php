@@ -21,7 +21,7 @@ class Enqueue extends BaseController
         wp_enqueue_style('ebc-donations-coupon-plugin-style', $this->plugin_url . 'assets/css/admin.css');
 
         // Only in donations page TODO: handle this appropriately don't use custom jquery
-        if (array_key_exists('page', $_GET) && $_GET['page'] === "ebc_donations_view") {
+        if (array_key_exists('page', $_GET) && in_array($_GET['page'], ["ebc_donations_view", "ebc_general_donations_view"])) {
 
 //            Datatable js
             wp_enqueue_script('jquery', 'https://code.jquery.com/jquery-3.3.1.js');
@@ -38,12 +38,12 @@ class Enqueue extends BaseController
 
     public function enqueue_front_scripts()
     {
-        // Show only in donations page (musyimi) or thank you page (thank-you)
-        if (is_page(['musyimi', 'thank-you'])) {
+        // Show only in relevant pages
+        if (is_page(['musyimi', 'thank-you', 'give', 'giving-thank-you'])) {
             wp_enqueue_style('ebc-main', $this->plugin_url . 'assets/css/ebc_donations.css');
         }
 
-        if (is_page('musyimi')) {
+        if (is_page(['musyimi', 'give'])) {
             wp_enqueue_script('ebc-main-script', $this->plugin_url . 'assets/js/main.js', [
                 'jquery'
             ]);

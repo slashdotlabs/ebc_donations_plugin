@@ -5,6 +5,7 @@ namespace SlashEbc\Api\Callbacks;
 
 use SlashEbc\Base\BaseController;
 use SlashEbc\Database\DonationsModel;
+use SlashEbc\Database\GivingModel;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -32,6 +33,22 @@ class AdminCallbacks extends BaseController
         echo $this->twig->render('donations.twig', ['donations' => $donations, 'status_badges_map' => $status_badges_map]);
     }
 
+    /**
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    function generalDonationsPage()
+    {
+        $donations = (new GivingModel())->fetchDonations();
+        $status_badges_map = [
+            "initiated" => "info",
+            "completed" => "success",
+            "cancelled" => "danger"
+        ];
+        echo $this->twig->render('general_donations.twig', ['donations' => $donations, 'status_badges_map' => $status_badges_map]);
+    }
+
     public function ebcIpaySection()
     {
         echo '<i>Enter the Vendor ID and Hashkey issued by iPay.</i>';
@@ -41,9 +58,17 @@ class AdminCallbacks extends BaseController
     {
         $output = get_option('ebc_donations_plugin');
 
-        $output["ipay"]["live"] = isset($input["ipay"]["live"]) ? true : false;
-        $output["ipay"]["vendor_id"] = $input["ipay"]["vendor_id"];
-        $output["ipay"]["hashkey"] = $input["ipay"]["hashkey"];
+        foreach ($input as $parentKey => $values) {
+            foreach ($values as $fieldKey => $fieldValue) {
+                if ($fieldKey == 'live') {
+                    $output[$parentKey][$fieldKey] = isset($fieldValue);
+                }
+                $output[$parentKey][$fieldKey] = $fieldValue;
+            }
+            if (!in_array('live', $values)) {
+                $output[$parentKey]['live'] = false;
+            }
+        }
 
         return $output;
     }

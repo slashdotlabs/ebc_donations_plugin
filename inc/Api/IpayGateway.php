@@ -6,6 +6,7 @@ namespace SlashEbc\Api;
 use Exception;
 use SlashEbc\Base\BaseController;
 use SlashEbc\Database\DonationsModel;
+use SlashEbc\Database\GivingModel;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -14,6 +15,7 @@ use Twig\Error\SyntaxError;
 class IpayGateway extends BaseController
 {
     private $donations_model;
+    private $model;
     private $vendor_id;
     private $hashkey;
     private $mode;
@@ -24,15 +26,23 @@ class IpayGateway extends BaseController
         parent::__construct();
         $this->donations_model = new DonationsModel();
         $this->logger = new Logger();
+    }
 
-        // Get saved options
+    public function set_ipay_vendor(string $donation_type)
+    {
         $plugin_options = get_option('ebc_donations_plugin');
-        if (!empty($plugin_options) && array_key_exists('ipay', $plugin_options)) {
-            $ipay_options = $plugin_options['ipay'];
+        // donation type mapped to the ipay vendor key options
+        $option_keys = [
+            'musyimi' => 'ipay',
+            'general_giving' => 'ipay_general_giving'
+        ];
+        if (!empty($plugin_options) && array_key_exists($option_keys[$donation_type], $plugin_options)) {
+            $ipay_options = $plugin_options[$option_keys[$donation_type]];
             $this->mode = $ipay_options['live'] ? "1" : "0";
             $this->vendor_id = $ipay_options['vendor_id'];
             $this->hashkey = $ipay_options['hashkey'];
         }
+        return $this;
     }
 
     public function retriveUrl(array $meta_data)
@@ -47,7 +57,7 @@ class IpayGateway extends BaseController
             "eml" => $meta_data['email'],
             "vid" => $this->vendor_id,
             "curr" => $meta_data['currency'],
-            "p1" => "",
+            "p1" => $meta_data['p1'],
             "p2" => "",
             "p3" => "",
             "p4" => "",
@@ -93,8 +103,16 @@ class IpayGateway extends BaseController
                 $this->logger->log(json_encode(['fields_return' => $response]));
             }
 
+            if ($response['p1'] === 'musyimi') {
+                $this->model = new DonationsModel();
+            }
+
+            if ($response['p1'] === 'general_giving') {
+                $this->model = new GivingModel();
+            }
+
             // Check if payment is already processed
-            $record = $this->donations_model->getByTransactionId($response['id']);
+            $record = $this->model->getByTransactionId($response['id']);
             if ($record === false || !isset($record)) throw new Exception("Error processing your request");
 
             // Verify status with iPay IPN
@@ -109,7 +127,7 @@ class IpayGateway extends BaseController
                 'payment_type' => $response['channel'],
                 'payment_date' => date('Y-m-d'),
             ];
-            $updated = $this->donations_model->update($update_data, ['transaction_id' => $response['id']]);
+            $updated = $this->model->update($update_data, ['transaction_id' => $response['id']]);
             if ($updated === false) throw new Exception('Could not process request');
             print("
                 <script>window.location.assign(window.location.href.split(\"?\")[0]);</script>
@@ -173,29 +191,5 @@ class IpayGateway extends BaseController
 
         }
         return ['process' => $process, 'state' => $state];
-    }
-
-    /**
-     * @param  $record
-     * @return bool
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
-     */
-    private function send_customer_email($record)
-    {
-        $customer_fullname = $record->fname . " " . $record->lname;
-        $to = $record->email;
-        $subject = "$customer_fullname, your coupon {$record->customer_coupon} is ready";
-        $message = $this->twig->render("mail/customer_coupon.twig",
-            [
-                "record" => $record,
-                "year" => date("Y"),
-                "copy_url" => "medios.co.ke",
-                "copy_name" => "MEDIOS LIMITED",
-                "copy_address" => "Suite 108, Blue Violets Plaza, Kindaruma Road. Nairobi"
-            ]);
-        $headers = ['Content-Type: text/html; charset=UTF-8'];
-        return wp_mail($to, $subject, $message, $headers);
     }
 }

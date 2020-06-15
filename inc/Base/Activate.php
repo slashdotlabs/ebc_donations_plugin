@@ -11,6 +11,7 @@ class Activate
     {
         flush_rewrite_rules();
         Migrations::createDonationsTable();
+        Migrations::createGivingTable();
     }
 
 }

@@ -1,5 +1,5 @@
 <div class="wrap">
-    <h1> Musyimi Family Fund Donations </h1>    <br>
+    <h1> Online Giving Donations </h1>    <br>
 
     <?php settings_errors(); ?>
 
@@ -14,7 +14,7 @@
             <th>Reference</th>
             <th>Paid On</th>
             <th>Status</th>
-            <th>Tribute</th>
+            <th>Purpose</th>
         </tr>
         </thead>
         <tbody>
@@ -32,7 +32,7 @@
             <td class="align-middle">
                 <span class="badge badge-{{ attribute(status_badges_map, donation.status) }}">{{ donation.status }}</span>
             </td>
-            <td class="align-middle" nowrap>{{ donation.tribute | default('N/A') }}</td>
+            <td class="align-middle" nowrap>{{ donation.purpose | default('N/A') }}</td>
         </tr>
         {% endfor %}
 

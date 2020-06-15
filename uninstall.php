@@ -8,6 +8,7 @@ if (file_exists(dirname(__FILE__) . '/vendor/autoload.php')) {
 
 // Drop the Payments table
 SlashEbc\Database\Migrations::dropDonationsTable();
+SlashEbc\Database\Migrations::dropGivingTable();
 
 // Clear plugin options
 delete_option("ebc_donations_plugin");

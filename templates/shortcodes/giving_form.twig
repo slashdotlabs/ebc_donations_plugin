@@ -1,6 +1,6 @@
-<div class="text-gray-700 ">
-    <form id="ebc-donations-form" class="max-w-4xl" action="#" method="post" onsubmit="return false;">
-        <input type="hidden" name="donation_type" value="musyimi">
+<div class="text-gray-700 flex justify-center w-full">
+    <form id="ebc-donations-form" class="max-w-6xl" action="#" method="post" onsubmit="return false;">
+        <input type="hidden" name="donation_type" value="general_giving">
         <label class="block">
             <span>Name (Optional)</span>
             <input type="text" name="name" class="form-input mt-1 block w-full" placeholder="Your Name">
@@ -29,8 +29,8 @@
             </label>
         </div>
         <label class="block">
-            <span>Tribute (Optional)</span>
-            <textarea name="tribute" class="form-textarea mt-1 block w-full" rows="3" placeholder="Tribute/message to the family"></textarea>
+            <span>The Purpose</span>
+            <input type="text" name="purpose" class="form-input w-full mt-1 block box-border" placeholder="e.g. Towards the children's home" required>
         </label>
         <button class="btn bg-brand-orange text-white text-sm tracking-wide" type="submit">Submit</button>
     </form>

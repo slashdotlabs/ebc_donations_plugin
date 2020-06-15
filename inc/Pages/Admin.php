@@ -58,11 +58,19 @@ class Admin extends BaseController
         $this->subpages = array(
             [
                 'parent_slug' => 'ebc_donations_plugin',
-                'page_title' => 'Donations',
-                'menu_title' => 'Donations',
+                'page_title' => 'Musyimi Donations',
+                'menu_title' => 'Musyimi Donations',
                 'capability' => 'manage_options',
                 'menu_slug' => 'ebc_donations_view',
                 'callback' => array($this->callbacks, 'donationsPage'),
+            ],
+            [
+                'parent_slug' => 'ebc_donations_plugin',
+                'page_title' => 'Online Giving Donations',
+                'menu_title' => 'Online Giving Donations',
+                'capability' => 'manage_options',
+                'menu_slug' => 'ebc_general_donations_view',
+                'callback' => array($this->callbacks, 'generalDonationsPage'),
             ]
         );
     }
@@ -84,13 +92,15 @@ class Admin extends BaseController
     {
         $args = array(
             [
-                'id' => 'ebc_ipay_live_index',
+                'id' => 'ebc_ipay_index',
+                'title' => 'Musyimi iPay Vendor Settings',
+                'callback' => array($this->callbacks, 'ebcIpaySection'),
                 'page' => 'ebc_donations_plugin'
 
             ],
             [
-                'id' => 'ebc_ipay_index',
-                'title' => 'iPay Settings',
+                'id' => 'ebc_ipay_general_giving_index',
+                'title' => 'Online Giving iPay Vendor Settings',
                 'callback' => array($this->callbacks, 'ebcIpaySection'),
                 'page' => 'ebc_donations_plugin'
 
@@ -102,19 +112,28 @@ class Admin extends BaseController
 
     public function setFields()
     {
-        $args = array();
-        foreach ($this->ebc_settings['ipay'] as $key => $value) {
-            switch ($value[2]) {
+        $args = array_merge(
+            $this->ipayDetailsFieldArgs('ebc_ipay_index', 'ipay', $this->getiPayFields()),
+            $this->ipayDetailsFieldArgs('ebc_ipay_general_giving_index', 'ipay_general_giving', $this->getiPayFields())
+        );
+        $this->settings->setFields($args);
+    }
+
+    private function ipayDetailsFieldArgs(string $section, string $parentField, array $fieldsList): array
+    {
+        $args = [];
+        foreach ($fieldsList as $field => $attributes) {
+            switch ($attributes['input-type']) {
                 case "toggle":
                     $args[] = array(
-                        'id' => $key,
-                        'title' => $value[0],
+                        'id' => $field,
+                        'title' => $attributes['title'],
                         'callback' => array($this->callbacks, 'ebcCheckboxFields'),
                         'page' => 'ebc_donations_plugin',
-                        'section' => 'ebc_ipay_live_index',
+                        'section' => $section,
                         'args' => array(
-                            'label_for' => $key,
-                            'field' => 'ipay',
+                            'label_for' => $field,
+                            'field' => $parentField,
                             'option_name' => 'ebc_donations_plugin',
                             'class' => 'example-class',
                         )
@@ -122,22 +141,40 @@ class Admin extends BaseController
                     break;
                 default:
                     $args[] = array(
-                        'id' => $key,
-                        'title' => $value[0],
+                        'id' => $field,
+                        'title' => $attributes['title'],
                         'callback' => array($this->callbacks, 'ebcTextFields'),
                         'page' => 'ebc_donations_plugin',
-                        'section' => 'ebc_ipay_index',
+                        'section' => $section,
                         'args' => array(
-                            'label_for' => $key,
-                            'placeholder' => $value[1],
-                            'field' => 'ipay',
+                            'label_for' => $field,
+                            'placeholder' => $attributes['placeholder'] ?? '',
+                            'field' => $parentField,
                             'class' => 'example-class',
                             'option_name' => 'ebc_donations_plugin',
                         )
                     );
             }
         }
-        $this->settings->setFields($args);
+        return $args;
+    }
+
+    private function getiPayFields(): array
+    {
+        return [
+            'live' => [
+                'title' => 'Set iPay to live',
+                'input-type' => 'toggle'
+            ],
+            'vendor_id' => [
+                'title' => 'Vendor ID',
+                'input-type' => 'text'
+            ],
+            'hashkey' => [
+                'title' => 'Hashkey',
+                'input-type' => 'text'
+            ],
+        ];
     }
 
 }

@@ -15,12 +15,12 @@
   "author": "Stephen Wanyee",
   "license": "ISC",
   "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^2.0.6",
+    "@fullhuman/postcss-purgecss": "^2.3.0",
     "@tailwindcss/custom-forms": "^0.2.1",
-    "autoprefixer": "^9.7.4",
-    "cross-env": "^7.0.0",
-    "postcss": "^7.0.26",
-    "postcss-cli": "^7.1.0",
-    "tailwindcss": "^1.1.4"
+    "autoprefixer": "^9.8.0",
+    "cross-env": "^7.0.2",
+    "postcss": "^7.0.32",
+    "postcss-cli": "^7.1.1",
+    "tailwindcss": "^1.4.6"
   }
 }
