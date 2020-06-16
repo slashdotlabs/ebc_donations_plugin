@@ -27,10 +27,13 @@ class Enqueue extends BaseController
             wp_enqueue_script('jquery', 'https://code.jquery.com/jquery-3.3.1.js');
             wp_enqueue_script("datatable-jquery", "https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js");
             wp_enqueue_script("datatable-bootstrap", "https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js");
+            wp_enqueue_script("datatable-buttons", "https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js");
+            wp_enqueue_script("datatable-html5-buttons", "https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js");
 
 //            Datatble css
             wp_enqueue_style("bootstrap", "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css");
             wp_enqueue_style("datatable-bootstrap", "https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css");
+            wp_enqueue_style("datatable-buttons", "https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css");
 
             wp_enqueue_script('ebc-donations-coupon-donations-script', $this->plugin_url . 'assets/js/donations.js');
         }
