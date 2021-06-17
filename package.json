@@ -19,7 +19,7 @@
     "@tailwindcss/custom-forms": "^0.2.1",
     "autoprefixer": "^9.8.0",
     "cross-env": "^7.0.2",
-    "postcss": "^7.0.32",
+    "postcss": "^7.0.36",
     "postcss-cli": "^7.1.1",
     "tailwindcss": "^1.4.6"
   }
